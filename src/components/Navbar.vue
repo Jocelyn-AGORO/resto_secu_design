@@ -1,13 +1,18 @@
 
 <template>
   <div class="card">
-    <Menubar :model="items" />
+    <Menubar :model="items" >
+      <template #start>
+        <PlateIcon/>
+      </template>
+    </Menubar>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { ref } from "vue";
 import Menubar from 'primevue/menubar'
+import PlateIcon from '@/components/icons/PlateIcon.vue'
 
 const items = ref([
   {
