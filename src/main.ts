@@ -4,6 +4,8 @@ import PrimeVue from 'primevue/config';
 import Aura from '@primevue/themes/aura';
 import './index.css'
 import './assets/main.css'
+import 'primeicons/primeicons.css'
+
 
 import App from './App.vue'
 import router from './router'

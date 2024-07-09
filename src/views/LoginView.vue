@@ -4,7 +4,7 @@
       <PlateIcon size="4rem" />
       <div class="text-900 text-3xl font-medium mb-3">Bienvenue à RestoWell</div>
     </div>
-    <div class="flex flex-col gap-3">
+    <div class="flex flex-col gap-3 w-1/3">
       <div class="flex flex-col gap-1">
         <label for="email" class="block text-900 font-medium mb-2">Email</label>
         <InputText v-model="credentials.email" name="email" id="email" type="text" class="w-full mb-3" />
@@ -53,9 +53,9 @@ const credentials = reactive({
 
 const login = async () => {
   await signIn(credentials.email, credentials.password)
-  if (isAuthenticated()) {
-    await router.push({name: "home"})
-  }
+  // if (isAuthenticated()) {
+  //   await router.push({name: "home"})
+  // }
 }
 
 </script>
