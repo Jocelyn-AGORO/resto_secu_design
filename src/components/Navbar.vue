@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
+import { ref, withDefaults } from "vue";
 import {useRouter} from "vue-router";
 import Menubar from 'primevue/menubar'
 import Avatar from 'primevue/avatar'
@@ -31,7 +31,14 @@ import PlateIcon from '@/components/icons/PlateIcon.vue'
 import user from '@/assets/static/user.png'
 import {useAuthStore} from "@/stores/auth"
 
+interface Props {
+  security: string;
+}
+
 const router = useRouter()
+const props = withDefaults(defineProps<Props>(), {
+  security: "safe"
+})
 const {signOut} = useAuthStore()
 const items = ref([
   {
@@ -53,8 +60,13 @@ const menus = ref([
     label: 'Déconnexion',
     icon: 'pi pi-sign-out',
     command: () => {
-      signOut()
-      router.push({name: 'login'})
+      if(props.security === 'safe') {
+        signOut()
+        router.push({name: 'login'})
+      } else {
+        console.log("unsafe")
+        router.push({name: 'unSafeLogin'})
+      }
     }
   },
 ])

@@ -49,10 +49,15 @@
 import Navbar from "@/components/Navbar.vue";
 import Drawer from 'primevue/drawer'
 import Button from 'primevue/button'
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onBeforeMount } from "vue";
 import restaurantsApi from "@/dal/restaurants.api";
 import type {RestaurantItem} from "@/models/restaurants";
 import Galleria from "primevue/galleria";
+import {useAuthStore} from "@/stores/auth";
+import {useRouter} from "vue-router";
+
+const {isAuthenticated} = useAuthStore()
+const router = useRouter()
 
 const responsiveOptions = ref([
   {
@@ -75,9 +80,12 @@ onMounted(async () => {
       itemImageSrc: new URL(`../assets/restos/${index+1}.jpeg`, import.meta.url).href
     }
   })
-  for(let resto of restaurants.value) {
-    console.log(resto)
-  }
-  console.log(restos)
 })
+
+onBeforeMount(()=> {
+  if(!isAuthenticated()){
+    router.push({name: "login"})
+  }
+})
+
 </script>

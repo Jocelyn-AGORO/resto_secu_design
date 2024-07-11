@@ -23,7 +23,7 @@
             <label class="ml-1 cursor-pointer" for="rememberme" @click="checked=!checked">Se souvenir de moi</label>
           </div>
           <a class="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer"
-             @click="() => router.push('/register')"
+             @click="() => router.push('/unsafe/register')"
           >
             Créer un compte
           </a>
@@ -51,7 +51,7 @@ import Button from "primevue/button";
 import {useAuthStore} from "@/stores/auth"
 
 const router = useRouter()
-const {signIn, isAuthenticated, rememberedCredentials, rememberCredentials } = useAuthStore()
+const {unSafeSignIn, rememberedCredentials, rememberCredentials } = useAuthStore()
 const checked = ref<boolean>(false)
 const credentials = reactive({
   email: "",
@@ -61,20 +61,15 @@ const modes = ref([
   { name: 'Sécurisé', value: "safe" },
   { name: 'Vulnérable', value: "unsafe" }
 ]);
-const mode = ref<string>("safe")
+const mode = ref<string>("unsafe")
 
 const login = async () => {
-  await signIn(credentials.email, credentials.password)
-  if (isAuthenticated()) {
-    await router.push({name: "home"})
-  }
+  await unSafeSignIn(credentials.email, credentials.password)
+  await router.push({name: "unSafeHome"})
 }
 
 onMounted(async ()=> {
   checked.value = rememberedCredentials()
-  if(isAuthenticated()){
-    await router.push({name: "home"})
-  }
 })
 
 watch(checked, (isRemenbered: boolean)=> {

@@ -23,8 +23,8 @@
       </div>
       <div class="flex flex-col gap-1">
         <label for="telephone" class="block text-900 font-medium mb-2">Téléphone</label>
-<!--        <InputText v-model="user.telephone" name="telephone" id="telephone" type="telephone" class="w-full mb-3" />-->
-        <InputMask id="telephone" v-model="user.telephone" mask="(06) 99 99 99 99" placeholder="(06) 48-51-20-50" fluid />
+        <!--        <InputText v-model="user.telephone" name="telephone" id="telephone" type="telephone" class="w-full mb-3" />-->
+        <InputMask id="telephone" v-model="user.telephone" mask="(06) 99 99 99 99" placeholder="(06) 54 28 90 15" fluid />
       </div>
       <div class="w-full my-2 flex justify-center">
         <Button label="Créer"
@@ -46,7 +46,7 @@ import Button from "primevue/button";
 import {useAuthStore} from "@/stores/auth"
 
 const router = useRouter()
-const {register} = useAuthStore()
+const {unSafeRegister} = useAuthStore()
 const user = reactive({
   nom: "",
   prenom: "",
@@ -56,8 +56,8 @@ const user = reactive({
 })
 
 const signUp = async () => {
-  const email = await register(user)
-  await router.push({name: 'login'})
+  const email = await unSafeRegister(user)
+  await router.push({name: 'unSafeLogin'})
 }
 
 </script>
