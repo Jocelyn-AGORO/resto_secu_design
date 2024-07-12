@@ -22,6 +22,15 @@
     <div class="flex justify-center text-5xl py-3 font-sans">
       Les Restaurants
     </div>
+    <div class="flex justify-end w-2/3 lg:w-1/2">
+      <IconField>
+        <InputIcon
+            class="pi pi-search"
+            @click="() => console.log('clickable!!!')"
+        />
+        <InputText v-model="restaurant" placeholder="Rechercher un restaurant" />
+      </IconField>
+    </div>
     <div class="w-full p-3 flex items-center justify-center" >
       <Galleria :value="restaurants"
     :responsiveOptions="responsiveOptions"
@@ -71,13 +80,14 @@ const responsiveOptions = ref([
 ]);
 const visible = ref(false);
 const restaurants = ref<RestaurantItem[]>([])
+const restaurant = ref<string>("");
 
 onMounted(async () => {
   const restos = await restaurantsApi.getRestaurants()
   restaurants.value = restos.map((resto, index) => {
     return {
       ...resto,
-      itemImageSrc: new URL(`../assets/restos/${index+1}.jpeg`, import.meta.url).href
+      itemImageSrc: new URL(`../assets/restos/${resto.id_restaurant}.jpeg`, import.meta.url).href
     }
   })
 })
