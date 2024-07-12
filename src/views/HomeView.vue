@@ -58,7 +58,7 @@
 import Navbar from "@/components/Navbar.vue";
 import Drawer from 'primevue/drawer'
 import Button from 'primevue/button'
-import { ref, onMounted, onBeforeMount } from "vue";
+import { ref, watch, onMounted, onBeforeMount } from "vue";
 import restaurantsApi from "@/dal/restaurants.api";
 import type {RestaurantItem} from "@/models/restaurants";
 import Galleria from "primevue/galleria";
@@ -82,7 +82,7 @@ const visible = ref(false);
 const restaurants = ref<RestaurantItem[]>([])
 const restaurant = ref<string>("");
 
-onMounted(async () => {
+const getRestaurantsWithImages = async () => {
   const restos = await restaurantsApi.getRestaurants()
   restaurants.value = restos.map((resto) => {
     return {
@@ -90,11 +90,33 @@ onMounted(async () => {
       itemImageSrc: new URL(`../assets/restos/${resto.id_restaurant}.jpeg`, import.meta.url).href
     }
   })
+}
+
+const searchRestaurantsWithImages = async (search: string) => {
+  const restos = await restaurantsApi.searchRestaurants(search)
+  restaurants.value = restos.map((resto) => {
+    return {
+      ...resto,
+      itemImageSrc: new URL(`../assets/restos/${resto.id_restaurant}.jpeg`, import.meta.url).href
+    }
+  })
+}
+
+onMounted(async () => {
+  await getRestaurantsWithImages()
 })
 
-onBeforeMount(()=> {
+onBeforeMount(() => {
   if(!isAuthenticated()){
     router.push({name: "login"})
+  }
+})
+
+watch(restaurant, async (search: string) => {
+  if(search === ""){
+    await getRestaurantsWithImages()
+  }else {
+    await searchRestaurantsWithImages(search)
   }
 })
 
