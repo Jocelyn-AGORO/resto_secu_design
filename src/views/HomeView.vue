@@ -84,7 +84,7 @@ const restaurant = ref<string>("");
 
 onMounted(async () => {
   const restos = await restaurantsApi.getRestaurants()
-  restaurants.value = restos.map((resto, index) => {
+  restaurants.value = restos.map((resto) => {
     return {
       ...resto,
       itemImageSrc: new URL(`../assets/restos/${resto.id_restaurant}.jpeg`, import.meta.url).href
